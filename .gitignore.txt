@@ -1,0 +1,36 @@
+# Target directory (output di Maven)
+target/
+
+# File temporanei dell'IDE IntelliJ IDEA
+*.iml
+.idea/
+
+# File temporanei dell'IDE Eclipse
+*.classpath
+*.project
+*.settings/
+
+# File temporanei di NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# File generati da test coverage (JaCoCo, cobertura, ecc.)
+*.exec
+*.ec
+*.coverage
+
+# File di log
+*.log
+
+# File di sistema
+.DS_Store
+Thumbs.db
+
+# Credenziali Maven (se per sbaglio vengono copiati nella repo)
+.settings.xml
+mvnw.cmd
+mvnw
