@@ -17,8 +17,8 @@ public class Dipendente {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "id_utente")
-	private Long id_utente;
+	@Column (name = "id_dipendente")
+	private Long id_dipendente;
 	
 	@Column (name = "nome")
 	private String nome;
@@ -43,10 +43,10 @@ public class Dipendente {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Dipendente(Long id_utente, String nome, String cognome, String username, String email, String password,
+	public Dipendente(Long id_dipendente, String nome, String cognome, String username, String email, String password,
 			Ruolo ruolo) {
 		super();
-		this.id_utente = id_utente;
+		this.id_dipendente = id_dipendente;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.username = username;
@@ -55,12 +55,12 @@ public class Dipendente {
 		this.ruolo = ruolo;
 	}
 
-	public Long getId_utente() {
-		return id_utente;
+	public Long getId_dipendente() {
+		return id_dipendente;
 	}
 
-	public void setId_utente(Long id_utente) {
-		this.id_utente = id_utente;
+	public void setId_dipendente(Long id_dipendente) {
+		this.id_dipendente = id_dipendente;
 	}
 
 	public String getNome() {
@@ -113,7 +113,7 @@ public class Dipendente {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cognome, email, id_utente, nome, password, ruolo, username);
+		return Objects.hash(cognome, email, id_dipendente, nome, password, ruolo, username);
 	}
 
 	@Override
@@ -126,14 +126,14 @@ public class Dipendente {
 			return false;
 		Dipendente other = (Dipendente) obj;
 		return Objects.equals(cognome, other.cognome) && Objects.equals(email, other.email)
-				&& Objects.equals(id_utente, other.id_utente) && Objects.equals(nome, other.nome)
+				&& Objects.equals(id_dipendente, other.id_dipendente) && Objects.equals(nome, other.nome)
 				&& Objects.equals(password, other.password) && ruolo == other.ruolo
 				&& Objects.equals(username, other.username);
 	}
 
 	@Override
 	public String toString() {
-		return "Dipendente [id_utente=" + id_utente + ", nome=" + nome + ", cognome=" + cognome + ", username="
+		return "Dipendente [id_dipendente=" + id_dipendente + ", nome=" + nome + ", cognome=" + cognome + ", username="
 				+ username + ", email=" + email + ", password=" + password + ", ruolo=" + ruolo + "]";
 	}
 	

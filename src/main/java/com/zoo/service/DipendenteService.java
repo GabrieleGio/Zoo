@@ -28,4 +28,12 @@ public class DipendenteService {
     public void eliminaDipendente(Long id) {
         dipendenteDAO.delete(id);
     }
+
+	public Dipendente trovaPerEmail(String email) {
+		return dipendenteDAO.findByEmail(email);
+	}
+
+	public Dipendente trovaPerUsername(String username) {
+		return dipendenteDAO.findByUsername(username);
+	}
 }

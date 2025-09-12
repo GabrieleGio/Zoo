@@ -4,6 +4,8 @@ import com.zoo.utils.JpaUtil;
 import com.zoo.entity.Dipendente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -76,6 +78,50 @@ public class DipendenteDAO {
         } finally {
             em.close();
         }
+    }
+    
+    public Dipendente findByEmail(String email) {
+        EntityManager em = JpaUtil.getEntityManager();
+        Dipendente dipendente = null;
+
+        try {
+            String jpql = "SELECT d FROM Dipendente d WHERE d.email = :email";
+
+            TypedQuery<Dipendente> query = em.createQuery(jpql, Dipendente.class);
+            query.setParameter("email", email);
+
+            dipendente = query.getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("Nessun dipendente trovato con questa email.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return dipendente;
+    }
+    
+    public Dipendente findByUsername(String username) {
+        EntityManager em = JpaUtil.getEntityManager();
+        Dipendente dipendente = null;
+
+        try {
+            String jpql = "SELECT d FROM Dipendente d WHERE d.username = :username";
+
+            TypedQuery<Dipendente> query = em.createQuery(jpql, Dipendente.class);
+            query.setParameter("username", username);
+
+            dipendente = query.getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("Nessun dipendente trovato con questo username.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+
+        return dipendente;
     }
 }
 

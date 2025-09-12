@@ -9,7 +9,7 @@ public class JpaUtil {
 
     static {
         try {
-            entityManagerFactory = Persistence.createEntityManagerFactory("hamburgeria-pu");
+            entityManagerFactory = Persistence.createEntityManagerFactory("zoo-pu");
         } catch (Exception e) {
             e.printStackTrace();
         }
