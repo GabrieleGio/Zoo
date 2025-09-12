@@ -21,11 +21,11 @@ public class DipendenteAnimale {
 	private Long id_dipendente_animale;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_id_zona")
+	@JoinColumn(name = "fk_id_dipendente")
 	private Dipendente dipendente;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_id_zona")
+	@JoinColumn(name = "fk_id_animale")
 	private Animale animale;
 	
 	public DipendenteAnimale() {
