@@ -1,7 +1,9 @@
 package com.zoo;
 
+import java.util.List;
 import java.util.Scanner;
 
+import com.zoo.entity.Animale;
 import com.zoo.entity.Dipendente;
 import com.zoo.entity.Ruolo;
 import com.zoo.service.DipendenteService;
@@ -62,14 +64,110 @@ public class Main {
 	        switch (choice) {
 	        
 	            case "1":
+	            	gestioneAnimali();
 	                break;
+	                
+	            case "2":
+	            	gestioneZone();
+	            	break;
+	            
+	            case "3":
+	            	gestioneZoneAnimali();
+	            	break;
 	                
 	            default:
 	                System.out.println("Opzione non valida. Riprova.");
 	        }
 	    }
 	 
-	 //Servizi di autenticazione
+	 // GESTIONE ANIMALI E ZONE //
+	 
+	 private static void gestioneZoneAnimali() {
+		 System.out.println("\n Gestione Zone Animali - " + loggedInUser.getNome());
+	        System.out.println();
+	        System.out.println("1. Da implementare");
+	        System.out.print("\nScegli un'opzione: ");
+
+	        String choice = scanner.nextLine();
+	        switch (choice) {
+	        
+	            case "1":
+	                break;
+	                
+	            case "2":
+	            	break;
+	            
+	            case "3":
+	            	break;
+	                
+	            default:
+	                System.out.println("Opzione non valida. Riprova.");
+	        }
+	}
+
+	 private static void gestioneZone() {
+		 System.out.println("\n Gestione Zone - " + loggedInUser.getNome());
+	        System.out.println();
+	        System.out.println("1. Da implementare");
+	        System.out.print("\nScegli un'opzione: ");
+
+	        String choice = scanner.nextLine();
+	        switch (choice) {
+	        
+	            case "1":
+	                break;
+	                
+	            case "2":
+	            	break;
+	            
+	            case "3":
+	            	break;
+	                
+	            default:
+	                System.out.println("Opzione non valida. Riprova.");
+	        }
+	}
+
+	 private static void gestioneAnimali() {
+		 System.out.println("\n Gestione Animali - " + loggedInUser.getNome());
+	        System.out.println();
+	        System.out.println("1. Da implementare");
+	        System.out.print("\nScegli un'opzione: ");
+
+	        String choice = scanner.nextLine();
+	        switch (choice) {
+	        
+	            case "1":
+	            	visualizzaAnimali();
+	                break;
+	                
+	            case "2":
+	            	break;
+	            	
+	            case "3":
+	            	return;
+	                
+	            default:
+	                System.out.println("Opzione non valida. Riprova.");
+	        }
+	}
+
+	 
+	 private static void visualizzaAnimali() {
+	        List<Animale> animali = animaleService.trovaTutti();
+	        if (animali.isEmpty()) {
+	            System.out.println("Nessun animale presente.");
+	        } else {
+	            for (Animale animale : animali) {
+	                System.out.println(animale);
+	            }
+	        }
+	    }
+	 
+	 
+
+	 // AUTENTICAZIONE //
+	 
 	 private static void register() {
 	        System.out.print("Inserisci nome: ");
 	        String nomeReg = scanner.nextLine().trim();
@@ -116,7 +214,7 @@ public class Main {
 	        	System.out.println("Esiste già un utente con questa email.");
 	        	return;
 	        }
-	        //Da rifattorizzare
+
 	        Dipendente dipendente2 = dipendenteService.trovaPerUsername(usernameReg);
 	        if (dipendente2 != null) {
 	        	System.out.println("Esiste già un utente con questo username.");
@@ -158,6 +256,8 @@ public class Main {
 	            System.out.println("Login fallito: L'username o la password sono errate.");
 	        }
 	    }
+	 
+	 
 
 	    private static void logout() {
 	        loggedInUser = null;

@@ -92,7 +92,7 @@ public class DipendenteDAO {
 
             dipendente = query.getSingleResult();
         } catch (NoResultException e) {
-            System.out.println("Nessun dipendente trovato con questa email.");
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -114,7 +114,7 @@ public class DipendenteDAO {
 
             dipendente = query.getSingleResult();
         } catch (NoResultException e) {
-            System.out.println("Nessun dipendente trovato con questo username.");
+        	
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
