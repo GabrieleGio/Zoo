@@ -93,7 +93,10 @@ public class Zona {
 
 	@Override
 	public String toString() {
-		return "Zona [id_zona=" + id_zona + ", nome=" + nome + ", habitat=" + habitat + ", capienza=" + capienza + "]";
+		return "ID: " + id_zona + 
+				"\nNome: " + nome + 
+				"\nHabitat: " + habitat + 
+				"\nCapienza: " + capienza;
 	}
 	
 	

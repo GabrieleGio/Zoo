@@ -108,8 +108,11 @@ public class Animale {
 
 	@Override
 	public String toString() {
-		return "Animale [id_animale=" + id_animale + ", nome=" + nome + ", specie=" + specie + ", anni=" + anni
-				+ ", zona=" + zona + "]";
+		return "ID: " + id_animale + 
+				"\nNome: " + nome + 
+				"\nSpecie: " + specie + 
+				"\nAnni: " + anni +
+				"\nZona: " + zona;
 	}
 	
 	
