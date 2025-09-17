@@ -12,6 +12,7 @@ import com.zoo.entity.Zona;
 import com.zoo.service.DipendenteService;
 import com.zoo.service.AnimaleService;
 import com.zoo.service.ZonaService;
+import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
@@ -543,6 +544,7 @@ public class Main {
 		newUser.setUsername(usernameReg);
 		newUser.setEmail(emailReg);
 		newUser.setPassword(passwordReg);
+		newUser.setPassword(PasswordHashing.hashPassword(passwordReg));
 		newUser.setRuolo(Ruolo.IN_ATTESA);
 
 		dipendenteService.creaDipendente(newUser);
@@ -882,7 +884,7 @@ public class Main {
 			return;
 		}
 
-		if (dipendente.getPassword().equals(password)) {
+		if (PasswordHashing.verifyPassword(password, dipendente.getPassword())) {
 			loggedInUser = dipendente;
 			System.out.println("Login effettuato con successo! Benvenuto, " + loggedInUser.getNome() + ".");
 		} else {
