@@ -34,8 +34,7 @@ public class Animale {
 	@JoinColumn(name = "fk_id_zona")
 	private Zona zona;
 	
-	public Animale() {
-	}
+	public Animale() {}
 
 	public Animale(Long id_animale, String nome, String specie, Integer anni, Zona zona) {
 		super();

@@ -39,9 +39,7 @@ public class Dipendente {
 	@Column (name = "ruolo")
 	private Ruolo ruolo;
 	
-	public Dipendente() {
-		// TODO Auto-generated constructor stub
-	}
+	public Dipendente() {}
 
 	public Dipendente(Long id_dipendente, String nome, String cognome, String username, String email, String password,
 			Ruolo ruolo) {

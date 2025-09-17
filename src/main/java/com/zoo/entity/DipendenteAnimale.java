@@ -28,8 +28,7 @@ public class DipendenteAnimale {
 	@JoinColumn(name = "fk_id_animale")
 	private Animale animale;
 	
-	public DipendenteAnimale() {
-	}
+	public DipendenteAnimale() {}
 
 	public DipendenteAnimale(Long id_dipendente_animale, Dipendente dipendente, Animale animale) {
 		super();

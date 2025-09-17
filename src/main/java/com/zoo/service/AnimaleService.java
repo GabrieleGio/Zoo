@@ -39,10 +39,10 @@ public class AnimaleService {
         if (zona != null) {
             zona.getAnimaliPresenti().remove(animale);
             animale.setZona(null);
-            zonaDAO.update(zona); // aggiorna la zona nel DB se necessario
+            zonaDAO.update(zona);
         }
 
-        animaleDAO.delete(animale.getId_animale()); // elimina l'animale dal DB
+        animaleDAO.delete(animale.getId_animale());
     }
     
     public void spostaAnimaleInZona(Long animaleId, Long nuovaZonaId) {

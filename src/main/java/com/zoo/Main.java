@@ -16,6 +16,7 @@ import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
+	// TODO far diventare l'habitat una classe del db, mettere un controllo di habitat quando si cambiano i recinti (es. no pesci nel deserto)
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +36,6 @@ public class Main {
 		        showAppMenu();
 		    }
 		}
-
 	}
 
 	private static void showAuthMenu() {
@@ -44,7 +44,6 @@ public class Main {
 		System.out.println("2. Login");
 		System.out.println("3. Esci");
 		System.out.print("\nScegli un'opzione: ");
-
 		String choice = scanner.nextLine();
 		switch (choice) {
 		case "1":
@@ -478,7 +477,7 @@ public class Main {
 	        System.out.println("L'animale è già in questa zona.");
 	        return;
 	    }
-
+	    
 	    try {
 	        animaleService.spostaAnimaleInZona(animaleId, zonaId);
 	        System.out.println("Animale spostato con successo nella nuova zona.");
@@ -546,7 +545,6 @@ public class Main {
 		newUser.setCognome(cognomeReg);
 		newUser.setUsername(usernameReg);
 		newUser.setEmail(emailReg);
-		newUser.setPassword(passwordReg);
 		newUser.setPassword(PasswordHashing.hashPassword(passwordReg));
 		newUser.setRuolo(Ruolo.IN_ATTESA);
 
