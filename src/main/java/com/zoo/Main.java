@@ -29,7 +29,7 @@ public class Main {
 		while (running) {
 		    if (loggedInUser == null) {
 		        showAuthMenu();
-		    } else if (loggedInUser.getRuolo() == Ruolo.ADMIN) {
+		    } else if (loggedInUser.getRuolo() == Ruolo.ADMIN || loggedInUser.getRuolo() == Ruolo.DIRETTORE) {
 		        showAdminMenu();
 		    } else {
 		        showAppMenu();
@@ -50,13 +50,16 @@ public class Main {
 		case "1":
 			register();
 			break;
+			
 		case "2":
 			login();
 			break;
+			
 		case "3":
 			System.out.println("Grazie per aver usato l'app. Arrivederci!");
 			System.exit(0);
 			break;
+			
 		default:
 			System.out.println("Opzione non valida. Riprova.");
 		}
@@ -490,7 +493,7 @@ public class Main {
 		String nomeReg = scanner.nextLine().trim();
 		System.out.print("Inserisci cognome: ");
 		String cognomeReg = scanner.nextLine().trim();
-		System.out.println("Inserisci username: ");
+		System.out.print("Inserisci username: ");
 		String usernameReg = scanner.nextLine().trim();
 		System.out.print("Inserisci email: ");
 		String emailReg = scanner.nextLine().trim();
@@ -739,6 +742,16 @@ public class Main {
 	            System.out.println("Dipendente non trovato.");
 	            return;
 	        }
+	        
+	        if (dipendente.getRuolo() == Ruolo.ADMIN && loggedInUser.getRuolo() != Ruolo.DIRETTORE) {
+	        	System.out.println("Impossibile modificare un altro admin.");
+	        	return;
+	        }
+	        
+	        if (dipendente.getId_dipendente().equals(loggedInUser.getId_dipendente())) {
+	            System.out.println("Non puoi modificare il tuo stesso ruolo.");
+	            return;
+	        }
 
 	        System.out.println("Ruolo attuale: " + dipendente.getRuolo());
 	        System.out.println("Scegli il nuovo ruolo:");
@@ -774,6 +787,11 @@ public class Main {
 	        if (dipendente == null) {
 	            System.out.println("Dipendente non trovato.");
 	            return;
+	        }
+	        
+	        if (dipendente.getRuolo() == Ruolo.ADMIN && loggedInUser.getRuolo() != Ruolo.DIRETTORE) {
+	        	System.out.println("Impossibile eliminare un altro admin.");
+	        	return;
 	        }
 
 	        if (loggedInUser.getId_dipendente().equals(id)) {
