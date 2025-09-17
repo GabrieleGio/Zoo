@@ -5,5 +5,6 @@ public enum Ruolo {
 	VETERINARIO,
 	MANUTENZIONE,
 	SICUREZZA,
-	IN_ATTESA
+	IN_ATTESA,
+	ADMIN
 }

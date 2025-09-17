@@ -29,7 +29,6 @@ public class DipendenteAnimale {
 	private Animale animale;
 	
 	public DipendenteAnimale() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public DipendenteAnimale(Long id_dipendente_animale, Dipendente dipendente, Animale animale) {

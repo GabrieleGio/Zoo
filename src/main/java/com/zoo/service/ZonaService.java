@@ -28,4 +28,13 @@ public class ZonaService {
     public void eliminaZona(Long id) {
         zonaDAO.delete(id);
     }
+    
+    public int getCapienzaAttuale(Long idZona) {
+        return zonaDAO.calcolaCapienzaAttuale(idZona);
+    }
+    
+    public long countAnimaliInZona(Long idZona) {
+        return zonaDAO.countAnimaliInZona(idZona);
+    }
 }
+

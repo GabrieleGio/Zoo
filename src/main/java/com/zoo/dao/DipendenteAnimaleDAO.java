@@ -37,11 +37,17 @@ public class DipendenteAnimaleDAO {
     public List<DipendenteAnimale> findAll() {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            return em.createQuery("SELECT da FROM DipendenteAnimale da", DipendenteAnimale.class).getResultList();
+            return em.createQuery(
+                "SELECT da FROM DipendenteAnimale da " +
+                "JOIN FETCH da.dipendente " +
+                "JOIN FETCH da.animale", 
+                DipendenteAnimale.class)
+            .getResultList();
         } finally {
             em.close();
         }
     }
+
 
     public void update(DipendenteAnimale assoc) {
         EntityManager em = JpaUtil.getEntityManager();

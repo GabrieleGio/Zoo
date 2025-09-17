@@ -35,7 +35,6 @@ public class Animale {
 	private Zona zona;
 	
 	public Animale() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Animale(Long id_animale, String nome, String specie, Integer anni, Zona zona) {
