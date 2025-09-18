@@ -266,7 +266,7 @@ public class Main {
 	            System.out.println("ID: " + animale.getId_animale());
 	            System.out.println("Nome: " + animale.getNome());
 	            System.out.println("Specie: " + animale.getSpecie());
-	            System.out.println("Anni: " + animale.getAnni());
+	            System.out.println("Anno di nascita: " + animale.getAnnoNascita());
 	            Zona zona = animale.getZona();
 	            if (zona != null) {
 	                long animaliPresenti = zonaService.countAnimaliInZona(zona.getId_zona());
@@ -290,10 +290,10 @@ public class Main {
 		String nomeAnimaleReg = scanner.nextLine().trim();
 		System.out.println("Inserisci la specie dell' animale: ");
 		String specieAnimaleReg = scanner.nextLine().trim();
-		System.out.println("Inserisci quanti anni ha l'animale: ");
-		String anniAnimaleReg = scanner.nextLine().trim();
+		System.out.println("Inserisci l'anno di nascita dell' animale: ");
+		String annoNascitaAnimaleReg = scanner.nextLine().trim();
 
-		if (nomeAnimaleReg.isEmpty() || specieAnimaleReg.isEmpty() || anniAnimaleReg.isEmpty()) {
+		if (nomeAnimaleReg.isEmpty() || specieAnimaleReg.isEmpty() || annoNascitaAnimaleReg.isEmpty()) {
 			System.out.println("Errore: Tutti i campi sono obbligatori e non possono essere vuoti.");
 			return;
 		}
@@ -313,11 +313,11 @@ public class Main {
 			return;
 		}
 
-		int anniAnimale;
+		int annoNascitaAnimale;
 		try {
-			anniAnimale = Integer.parseInt(anniAnimaleReg);
-			if (anniAnimale < 0) {
-				System.out.println("Errore: L'età non può essere negativa.");
+			annoNascitaAnimale = Integer.parseInt(annoNascitaAnimaleReg);
+			if (annoNascitaAnimale < 0) {
+				System.out.println("Errore: L'anno di nascita non può essere un numero negativo.");
 				return;
 			}
 		} catch (NumberFormatException e) {
@@ -328,7 +328,7 @@ public class Main {
 		Animale newAnimale = new Animale();
 		newAnimale.setNome(nomeAnimaleReg);
 		newAnimale.setSpecie(specieAnimaleReg);
-		newAnimale.setAnni(anniAnimale);
+		newAnimale.setAnnoNascita(annoNascitaAnimale);
 		newAnimale.setZona(null); // da assegnare in seguito
 
 		animaleService.creaAnimale(newAnimale);
@@ -372,18 +372,18 @@ public class Main {
 				}
 			}
 
-			System.out.print("Nuova età (" + animale.getAnni() + "): ");
-			String nuovaEta = scanner.nextLine().trim();
-			if (!nuovaEta.isEmpty()) {
+			System.out.print("Nuovo anno di nascita (" + animale.getAnnoNascita() + "): ");
+			String nuovoAnnoNascita = scanner.nextLine().trim();
+			if (!nuovoAnnoNascita.isEmpty()) {
 				try {
-					int eta = Integer.parseInt(nuovaEta);
-					if (eta >= 0) {
-						animale.setAnni(eta);
+					int annoNascita = Integer.parseInt(nuovoAnnoNascita);
+					if (annoNascita >= 0) {
+						animale.setAnnoNascita(annoNascita);
 					} else {
-						System.out.println("Errore: L'età deve essere un numero positivo. Età non modificata.");
+						System.out.println("Errore: L'anno di nascita deve essere un numero positivo. Anno di nascita non modificato.");
 					}
 				} catch (NumberFormatException e) {
-					System.out.println("Errore: L'età inserita non è un numero valido. Età non modificata.");
+					System.out.println("Errore: L'anno di nascita inserito non è un numero valido. Anno di nascita non modificato.");
 				}
 			}
 
@@ -889,7 +889,7 @@ public class Main {
 	    for (DipendenteAnimale da : assegnazioni) {
 	        if (da.getDipendente().getId_dipendente().equals(dipId)) {
 	            Animale a = da.getAnimale();
-	            System.out.println("Animale: " + a.getNome() + ", Specie: " + a.getSpecie() + ", Età: " + a.getAnni());
+	            System.out.println("Animale: " + a.getNome() + ", Specie: " + a.getSpecie() + ", Anno di nascita: " + a.getAnnoNascita());
 	            trovato = true;
 	        }
 	    }

@@ -1,6 +1,5 @@
 package com.zoo.entity;
 
-import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,8 +26,8 @@ public class Animale {
 	@Column(name = "specie")
 	private String specie;
 	
-	@Column(name = "anni")
-	private Integer anni;
+	@Column(name = "anno_nascita")
+	private Integer annoNascita;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_id_zona")
@@ -36,14 +35,15 @@ public class Animale {
 	
 	public Animale() {}
 
-	public Animale(Long id_animale, String nome, String specie, Integer anni, Zona zona) {
+	public Animale(Long id_animale, String nome, String specie, Integer annoNascita, Zona zona) {
 		super();
 		this.id_animale = id_animale;
 		this.nome = nome;
 		this.specie = specie;
-		this.anni = anni;
+		this.annoNascita = annoNascita;
 		this.zona = zona;
 	}
+
 
 	public Long getId_animale() {
 		return id_animale;
@@ -69,12 +69,12 @@ public class Animale {
 		this.specie = specie;
 	}
 
-	public Integer getAnni() {
-		return anni;
+	public Integer getAnnoNascita() {
+		return annoNascita;
 	}
 
-	public void setAnni(Integer anni) {
-		this.anni = anni;
+	public void setAnnoNascita(Integer annoNascita) {
+		this.annoNascita = annoNascita;
 	}
 
 	public Zona getZona() {
@@ -86,32 +86,12 @@ public class Animale {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(anni, id_animale, nome, specie, zona);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Animale other = (Animale) obj;
-		return Objects.equals(anni, other.anni) && Objects.equals(id_animale, other.id_animale)
-				&& Objects.equals(nome, other.nome) && Objects.equals(specie, other.specie)
-				&& Objects.equals(zona, other.zona);
-	}
-
-	@Override
 	public String toString() {
 		return "ID: " + id_animale + 
 				"\nNome: " + nome + 
 				"\nSpecie: " + specie + 
-				"\nAnni: " + anni +
+				"\nAnno di nascita: " + annoNascita +
 				"\nZona: " + zona;
 	}
-	
 	
 }
