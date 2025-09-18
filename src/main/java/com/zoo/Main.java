@@ -505,6 +505,12 @@ public class Main {
 	        return;
 	    }
 	    
+	    if (!nuovaZona.getHabitat().getNome().equalsIgnoreCase(animale.getHabitatPreferito())) {
+	        System.out.println("Errore: L'habitat in cui vuoi spostare l'animale non è il suo habitat naturale!");
+	        return;
+	    }
+
+	    
 	    try {
 	        animaleService.spostaAnimaleInZona(animaleId, zonaId);
 	        System.out.println("Animale spostato con successo nella nuova zona.");
@@ -699,6 +705,7 @@ public class Main {
 	        String nuovaCapienza = scanner.nextLine().trim();
 	        if (!nuovaCapienza.isEmpty()) {
 	            try {
+	            	// mettere controllo capienza se ci sono già animali dentro
 	                zona.setCapienza(Integer.parseInt(nuovaCapienza));
 	            } catch (NumberFormatException e) {
 	                System.out.println("Capienza non valida. Operazione annullata.");

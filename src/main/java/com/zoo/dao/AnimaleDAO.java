@@ -4,6 +4,7 @@ import com.zoo.utils.JpaUtil;
 import com.zoo.entity.Animale;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 
@@ -30,13 +31,20 @@ public class AnimaleDAO {
 	    EntityManager em = JpaUtil.getEntityManager();
 	    try {
 	        return em.createQuery(
-	            "SELECT a FROM Animale a LEFT JOIN FETCH a.zona WHERE a.id_animale = :id", Animale.class)
+	            "SELECT a FROM Animale a " +
+	            "JOIN FETCH a.zona z " +
+	            "LEFT JOIN FETCH z.animaliPresenti " +
+	            "WHERE a.id_animale = :id", 
+	            Animale.class)
 	            .setParameter("id", id)
 	            .getSingleResult();
+	    } catch (NoResultException e) {
+	        return null;
 	    } finally {
 	        em.close();
 	    }
 	}
+
 
     public List<Animale> findAll() {
         EntityManager em = JpaUtil.getEntityManager();
