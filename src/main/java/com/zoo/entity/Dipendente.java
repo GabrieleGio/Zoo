@@ -4,11 +4,12 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,8 +36,8 @@ public class Dipendente {
 	@Column (name = "password")
 	private String password;
 	
-	@Enumerated(EnumType.STRING)
-	@Column (name = "ruolo")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_id_ruolo", referencedColumnName = "id_ruolo")
 	private Ruolo ruolo;
 	
 	public Dipendente() {}

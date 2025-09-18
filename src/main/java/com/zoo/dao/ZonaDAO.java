@@ -4,6 +4,7 @@ import com.zoo.utils.JpaUtil;
 import com.zoo.entity.Zona;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -29,7 +30,14 @@ public class ZonaDAO {
     public Zona findById(Long id) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            return em.find(Zona.class, id);
+            return em.createQuery(
+                "SELECT z FROM Zona z JOIN FETCH z.habitat WHERE z.id_zona = :id", 
+                Zona.class
+            )
+            .setParameter("id", id)
+            .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
@@ -38,11 +46,31 @@ public class ZonaDAO {
     public List<Zona> findAll() {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            return em.createQuery("SELECT z FROM Zona z", Zona.class).getResultList();
+            return em.createQuery(
+                "SELECT z FROM Zona z JOIN FETCH z.habitat", 
+                Zona.class
+            ).getResultList();
         } finally {
             em.close();
         }
     }
+    
+    public Zona findByNome(String nome) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                "SELECT z FROM Zona z JOIN FETCH z.habitat WHERE z.nome = :nome",
+                Zona.class
+            )
+            .setParameter("nome", nome)
+            .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
 
     public void update(Zona zona) {
         EntityManager em = JpaUtil.getEntityManager();
