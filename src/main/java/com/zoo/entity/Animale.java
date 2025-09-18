@@ -1,6 +1,8 @@
 package com.zoo.entity;
 
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,18 +31,22 @@ public class Animale {
 	@Column(name = "anno_nascita")
 	private Integer annoNascita;
 	
+	@Column(name = "habitat_preferito")
+	private String habitatPreferito;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_id_zona")
 	private Zona zona;
 	
 	public Animale() {}
 
-	public Animale(Long id_animale, String nome, String specie, Integer annoNascita, Zona zona) {
+	public Animale(Long id_animale, String nome, String specie, Integer annoNascita, String habitatPreferito, Zona zona) {
 		super();
 		this.id_animale = id_animale;
 		this.nome = nome;
 		this.specie = specie;
 		this.annoNascita = annoNascita;
+		this.habitatPreferito = habitatPreferito;
 		this.zona = zona;
 	}
 
@@ -76,6 +82,15 @@ public class Animale {
 	public void setAnnoNascita(Integer annoNascita) {
 		this.annoNascita = annoNascita;
 	}
+	
+	
+	public String getHabitatPreferito() {
+		return habitatPreferito;
+	}
+
+	public void setHabitatPreferito(String habitatPreferito) {
+		this.habitatPreferito = habitatPreferito;
+	}
 
 	public Zona getZona() {
 		return zona;
@@ -83,6 +98,27 @@ public class Animale {
 
 	public void setZona(Zona zona) {
 		this.zona = zona;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(annoNascita, habitatPreferito, id_animale, nome, specie, zona);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Animale other = (Animale) obj;
+		return Objects.equals(annoNascita, other.annoNascita)
+				&& Objects.equals(habitatPreferito, other.habitatPreferito)
+				&& Objects.equals(id_animale, other.id_animale) && Objects.equals(nome, other.nome)
+				&& Objects.equals(specie, other.specie) && Objects.equals(zona, other.zona);
 	}
 
 	@Override

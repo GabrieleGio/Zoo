@@ -2,6 +2,7 @@ package com.zoo;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import com.zoo.entity.Animale;
 import com.zoo.entity.Dipendente;
@@ -19,6 +20,9 @@ import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
 	// TODO mettere un controllo di habitat quando si cambiano i recinti (es. no pesci nel deserto)
+	// TODO controllo su classe Animale di habitat preferito se viene modificato mentre in un altro habitat non più preferito
+	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre ci sono animali ancora dentro
+	// TODO controllo su classe Zona se viene modificata capienza habitat mentre ci sono animali dentro
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
 
@@ -267,18 +271,12 @@ public class Main {
 	            System.out.println("Nome: " + animale.getNome());
 	            System.out.println("Specie: " + animale.getSpecie());
 	            System.out.println("Anno di nascita: " + animale.getAnnoNascita());
+	            System.out.println("Habitat preferito: " + animale.getHabitatPreferito());
 	            Zona zona = animale.getZona();
 	            if (zona != null) {
-	                long animaliPresenti = zonaService.countAnimaliInZona(zona.getId_zona());
-	                int capienzaMassima = zona.getCapienza();
-	                int capienzaAttuale = capienzaMassima - (int) animaliPresenti;
-
-	                System.out.println("Zona: " + zona.getNome() + " [ID: " + zona.getId_zona() + "]");
-	                System.out.println("Capienza Massima: " + capienzaMassima);
-	                System.out.println("Animali Presenti: " + animaliPresenti);
-	                System.out.println("Capienza Attuale: " + capienzaAttuale);
+	                System.out.println("Zona attuale: " + zona.getNome() + " [ID: " + zona.getId_zona() + "]");
 	            } else {
-	                System.out.println("Zona: null");
+	                System.out.println("Zona: da assegnare");
 	            }
 	            System.out.println("--------------------");
 	        }
@@ -286,12 +284,14 @@ public class Main {
 	}
 
 	private static void aggiungiAnimale() {
-		System.out.println("Inserisci il nome dell' animale: ");
+		System.out.println("Inserisci il nome dell' animale (max 25 caratteri): ");
 		String nomeAnimaleReg = scanner.nextLine().trim();
-		System.out.println("Inserisci la specie dell' animale: ");
+		System.out.println("Inserisci la specie dell' animale (solo caratteri): ");
 		String specieAnimaleReg = scanner.nextLine().trim();
-		System.out.println("Inserisci l'anno di nascita dell' animale: ");
+		System.out.println("Inserisci l'anno di nascita dell' animale (solo l'anno): ");
 		String annoNascitaAnimaleReg = scanner.nextLine().trim();
+		System.out.println("Inserisci l'habitat preferito dell'animale (max 1, solo caratteri): ");
+		String habitatPreferitoAnimaleReg = scanner.nextLine().trim();
 
 		if (nomeAnimaleReg.isEmpty() || specieAnimaleReg.isEmpty() || annoNascitaAnimaleReg.isEmpty()) {
 			System.out.println("Errore: Tutti i campi sono obbligatori e non possono essere vuoti.");
@@ -312,6 +312,14 @@ public class Main {
 			System.out.println("Registrazione annullata: Specie non conforme (contiene numeri o simboli).");
 			return;
 		}
+		
+		if (habitatPreferitoAnimaleReg.length() > 25) {
+			System.out.println("Registrazione annullata: Habitat preferito non conforme (max 25 caratteri).");
+		}
+		
+		if (habitatPreferitoAnimaleReg.matches("^[a-zA-Z]+$")) {
+			System.out.println("Registrazione annullata: Habitat preferito non conforme (contiente numeri o simboli).");
+		}
 
 		int annoNascitaAnimale;
 		try {
@@ -329,6 +337,7 @@ public class Main {
 		newAnimale.setNome(nomeAnimaleReg);
 		newAnimale.setSpecie(specieAnimaleReg);
 		newAnimale.setAnnoNascita(annoNascitaAnimale);
+		newAnimale.setHabitatPreferito(habitatPreferitoAnimaleReg);
 		newAnimale.setZona(null); // da assegnare in seguito
 
 		animaleService.creaAnimale(newAnimale);
@@ -384,6 +393,18 @@ public class Main {
 					}
 				} catch (NumberFormatException e) {
 					System.out.println("Errore: L'anno di nascita inserito non è un numero valido. Anno di nascita non modificato.");
+				}
+			}
+			
+			System.out.print("Nuovo habitat preferito (" + animale.getSpecie() + "): ");
+			String nuovoHabitatPreferito = scanner.nextLine().trim();
+			if (!nuovoHabitatPreferito.isEmpty()) {
+				if (nuovoHabitatPreferito.matches("^[a-zA-ZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚçÇ\\s]{1,25}$")) {
+					// mettere controllo di compatibilità animale con il nuovo habitat
+					animale.setHabitatPreferito(nuovoHabitatPreferito);
+				} else {
+					System.out.println(
+							"Habitat preferito non valido. Deve contenere solo lettere (max 25 caratteri). Habitat preferito non modificato.");
 				}
 			}
 
@@ -565,14 +586,18 @@ public class Main {
 	        System.out.println("Nessuna zona presente.");
 	    } else {
 	        for (Zona zona : zone) {
-	            long animaliPresenti = zonaService.countAnimaliInZona(zona.getId_zona());
+	            long animaliPresentiNumero = zonaService.countAnimaliInZona(zona.getId_zona());
 	            int capienzaMassima = zona.getCapienza();
-	            int capienzaAttuale = capienzaMassima - (int) animaliPresenti;
+	            int capienzaAttuale = capienzaMassima - (int) animaliPresentiNumero;
+	            List<Animale> animaliPresenti = zona.getAnimaliPresenti();
+	            String stampaAnimaliPresenti = animaliPresenti.stream()
+	            	    .map(animale -> "[" + animale.getNome() + " (ID: " + animale.getId_animale() + ")" + "]")
+	            	    .collect(Collectors.joining(", "));
 
 	            System.out.println("Zona [ID: " + zona.getId_zona() + ", Nome: " + zona.getNome() +
 	                ", Habitat: " + zona.getHabitat() +
 	                ", Capienza Massima: " + capienzaMassima +
-	                ", Animali Presenti: " + animaliPresenti +
+	                ", Animali Presenti: " + stampaAnimaliPresenti +
 	                ", Capienza Attuale: " + capienzaAttuale + "]");
 	            System.out.println("--------------------");
 	        }

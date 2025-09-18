@@ -31,7 +31,7 @@ public class ZonaDAO {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT z FROM Zona z JOIN FETCH z.habitat WHERE z.id_zona = :id", 
+                "SELECT z FROM Zona z JOIN FETCH z.habitat LEFT JOIN FETCH z.animaliPresenti WHERE z.id_zona = :id",
                 Zona.class
             )
             .setParameter("id", id)
@@ -47,13 +47,14 @@ public class ZonaDAO {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT z FROM Zona z JOIN FETCH z.habitat", 
+                "SELECT DISTINCT z FROM Zona z JOIN FETCH z.habitat LEFT JOIN FETCH z.animaliPresenti",
                 Zona.class
             ).getResultList();
         } finally {
             em.close();
         }
     }
+
     
     public Zona findByNome(String nome) {
         EntityManager em = JpaUtil.getEntityManager();
