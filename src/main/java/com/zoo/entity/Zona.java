@@ -36,15 +36,10 @@ public class Zona {
     @JoinColumn(name = "fk_id_habitat", referencedColumnName = "id_habitat")
     private Habitat habitat;
 	
-	@Transient
-	private Integer capienzaAttuale = 0;
-	
 	@OneToMany(mappedBy = "zona", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Animale> animaliPresenti = new ArrayList<>();
 	
-	public Zona() {
-		this.capienzaAttuale = this.capienza - this.animaliPresenti.size();
-	}
+	public Zona() {}
 
 	public Zona(Long id_zona, String nome, Habitat habitat, Integer capienza) {
 		super();
@@ -52,7 +47,6 @@ public class Zona {
 		this.nome = nome;
 		this.habitat = habitat;
 		this.capienza = capienza;
-		this.capienzaAttuale = this.capienza - this.animaliPresenti.size();
 	}
 
 	public Long getId_zona() {
@@ -87,12 +81,9 @@ public class Zona {
 		this.capienza = capienza;
 	}
 
+	@Transient
 	public Integer getCapienzaAttuale() {
-		return capienzaAttuale;
-	}
-
-	public void setCapienzaAttuale(Integer capienzaAttuale) {
-		this.capienzaAttuale = capienzaAttuale;
+	    return capienza - animaliPresenti.size();
 	}
 
 	public List<Animale> getAnimaliPresenti() {
@@ -104,34 +95,36 @@ public class Zona {
 	}
 	
 	public void addAnimaleToAnimaliPresenti(Animale animale) {
-		this.animaliPresenti.add(animale);
-		this.capienzaAttuale--;
+	    if (!animaliPresenti.contains(animale)) {
+	        animaliPresenti.add(animale);
+	        animale.setZona(this);
+	    }
 	}
-	
+
 	public void removeAnimaleFromAnimaliPresenti(Animale animale) {
-        if (animaliPresenti.remove(animale)) {
-            capienzaAttuale--;
-            animale.setZona(null);
-        }
-    }
+	    if (animaliPresenti.contains(animale)) {
+	        animaliPresenti.remove(animale);
+	        animale.setZona(null);
+	    }
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(animaliPresenti, capienza, capienzaAttuale, habitat, id_zona, nome);
+	    return Objects.hash(animaliPresenti, capienza, habitat, id_zona, nome);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Zona other = (Zona) obj;
-		return Objects.equals(animaliPresenti, other.animaliPresenti) && Objects.equals(capienza, other.capienza)
-				&& Objects.equals(capienzaAttuale, other.capienzaAttuale) && habitat == other.habitat
-				&& Objects.equals(id_zona, other.id_zona) && Objects.equals(nome, other.nome);
+	    if (this == obj)
+	        return true;
+	    if (obj == null || getClass() != obj.getClass())
+	        return false;
+	    Zona other = (Zona) obj;
+	    return Objects.equals(animaliPresenti, other.animaliPresenti)
+	            && Objects.equals(capienza, other.capienza)
+	            && Objects.equals(habitat, other.habitat)
+	            && Objects.equals(id_zona, other.id_zona)
+	            && Objects.equals(nome, other.nome);
 	}
 
 	@Override
@@ -139,10 +132,9 @@ public class Zona {
 	    StringBuilder result = new StringBuilder("Zona [");
 	    result.append("ID: ").append(id_zona)
 	          .append(", Nome: ").append(nome)
-	          .append(", Habitat: ").append(habitat)
-	          .append(", Capienza Massima: ").append(capienza);
-
-	    result.append(", Capienza Attuale: ").append(capienzaAttuale);
+	          .append(", Habitat: ").append(habitat != null ? habitat.getNome() : "N/A")
+	          .append(", Capienza Massima: ").append(capienza)
+	          .append(", Capienza Attuale: ").append(getCapienzaAttuale());
 
 	    if (!animaliPresenti.isEmpty()) {
 	        result.append(", Animali Presenti: ").append(animaliPresenti.size()).append(" (");
@@ -156,11 +148,8 @@ public class Zona {
 	    } else {
 	        result.append(", Animali Presenti: 0");
 	    }
+
 	    result.append("]");
 	    return result.toString();
 	}
-
-
-	
-	
 }

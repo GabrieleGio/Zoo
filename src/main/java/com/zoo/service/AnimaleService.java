@@ -58,7 +58,7 @@ public class AnimaleService {
 
         Zona vecchiaZona = animale.getZona();
 
-        if (nuovaZona.getCapienzaAttuale() >= nuovaZona.getCapienza()) {
+        if (nuovaZona.getCapienzaAttuale() <= 0) {
             throw new RuntimeException("La zona di destinazione ha raggiunto la capienza massima.");
         }
 
@@ -77,16 +77,27 @@ public class AnimaleService {
         animaleDAO.update(animale);
         zonaDAO.update(nuovaZona);
     }
-    
-    public void rimuoviAnimaleDaZona(Long animaleId) {
-    	Animale animale = trovaPerId(animaleId);
-    	if (animale == null) {
-    		throw new RuntimeException("Animale non trovato.");
-    	}
 
-    	animale.setZona(null);
-    	animaleDAO.save(animale);
+
+    public void rimuoviAnimaleDaZona(Long animaleId) {
+        Animale animale = trovaPerId(animaleId);
+        if (animale == null) {
+            throw new RuntimeException("Animale non trovato.");
+        }
+
+        Zona zona = animale.getZona();
+        if (zona != null) {
+            zona.getAnimaliPresenti().remove(animale);
+            animale.setZona(null);
+            animaleDAO.update(animale);
+            zonaDAO.update(zona);
+        } else {
+            animaleDAO.update(animale);
+        }
     }
+
+
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.zoo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -21,8 +22,6 @@ import com.zoo.service.DipendenteAnimaleService;
 public class Main {
 	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre
 	// ci sono animali ancora dentro
-	// TODO controllo su classe Zona se viene modificata capienza habitat mentre ci
-	// sono animali dentro
 
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
@@ -714,12 +713,19 @@ public class Main {
 				return;
 			}
 			zona.setHabitat(habitatSelezionato);
+			List<Animale> animaliPresenti = new ArrayList<>(zona.getAnimaliPresenti());
+			for (Animale animale : animaliPresenti) {
+			    if (!animale.getHabitatPreferito().equalsIgnoreCase(zona.getHabitat().getNome())) {
+			        animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
+			        zona.getAnimaliPresenti().remove(animale);
+			        System.out.println(animale.getNome() + " rimosso dalla zona perchè habitat non più adatto.");
+			    }
+			}
 
 			System.out.print("Nuova capienza (" + zona.getCapienza() + "): ");
 			String nuovaCapienza = scanner.nextLine().trim();
 			if (!nuovaCapienza.isEmpty()) {
 				try {
-					//TODO da vedere se funziona controllo capienza se ci sono già animali dentro
 					Integer nuovaCapienzaInt = Integer.parseInt(nuovaCapienza);
 					if (nuovaCapienzaInt < zona.getAnimaliPresenti().size()) {
 						System.out.println("Impossibile diminuire la capienza, ci sono ancora animali ad occupare posti");
