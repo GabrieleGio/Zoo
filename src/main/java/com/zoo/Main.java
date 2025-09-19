@@ -20,7 +20,7 @@ import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
-	//TODO Fixare modifica animali (lazy error)
+	//TODO Verificare aggiunta di nomi uguali
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
 
@@ -401,21 +401,20 @@ public class Main {
 				if (nuovoHabitatPreferito.matches("^[a-zA-ZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚçÇ\\s]{1,25}$")) {
 					animale.setHabitatPreferito(nuovoHabitatPreferito);
 				} else {
-					System.out.println(
-							"Habitat preferito non valido. Deve contenere solo lettere (max 25 caratteri). Habitat preferito non modificato.");
+					System.out.println("Habitat preferito non valido...");
 				}
 			}
 
 			if (animale.getZona() != null) {
 				if (!animale.getHabitatPreferito().equalsIgnoreCase(animale.getZona().getHabitat().getNome())) {
 					animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
-					System.out.println(
-							"Animale rimosso dalla zona attuale perché il nuovo habitat preferito è incompatibile con l'habitat della zona.");
+					System.out.println("Animale rimosso dalla zona...");
 				}
 			}
 
 			animaleService.aggiornaAnimale(animale);
 			System.out.println("Modifica completata.");
+
 
 		} catch (NumberFormatException e) {
 			System.out.println("ID non valido. Operazione annullata.");
