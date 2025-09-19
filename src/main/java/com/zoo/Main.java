@@ -295,12 +295,12 @@ public class Main {
 			return;
 		}
 
-		if (nomeAnimaleReg.length() > 25) {
+		if (nomeAnimaleReg.length() > 25 || nomeAnimaleReg.startsWith(" ") || nomeAnimaleReg.endsWith(" ")) {
 			System.out.println("Registrazione annullata: Nome non conforme (max 25 caratteri).");
 			return;
 		}
 
-		if (specieAnimaleReg.length() > 25) {
+		if (specieAnimaleReg.length() > 25 || specieAnimaleReg.startsWith(" ") || specieAnimaleReg.endsWith(" ")) {
 			System.out.println("Registrazione annullata: Specie non conforme (max 25 caratteri).");
 			return;
 		}
@@ -395,7 +395,7 @@ public class Main {
 				}
 			}
 
-			System.out.print("Nuovo habitat preferito (" + animale.getSpecie() + "): ");
+			System.out.print("Nuovo habitat preferito (" + animale.getHabitatPreferito() + "): ");
 			String nuovoHabitatPreferito = scanner.nextLine().trim();
 			if (!nuovoHabitatPreferito.isEmpty()) {
 				if (nuovoHabitatPreferito.matches("^[a-zA-ZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚçÇ\\s]{1,25}$")) {
