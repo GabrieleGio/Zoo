@@ -19,8 +19,6 @@ import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
-	// TODO controllo su classe Animale di habitat preferito se viene modificato
-	// mentre in un altro habitat non più preferito
 	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre
 	// ci sono animali ancora dentro
 	// TODO controllo su classe Zona se viene modificata capienza habitat mentre ci
@@ -404,11 +402,17 @@ public class Main {
 			String nuovoHabitatPreferito = scanner.nextLine().trim();
 			if (!nuovoHabitatPreferito.isEmpty()) {
 				if (nuovoHabitatPreferito.matches("^[a-zA-ZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚçÇ\\s]{1,25}$")) {
-					// mettere controllo di compatibilità animale con il nuovo habitat
 					animale.setHabitatPreferito(nuovoHabitatPreferito);
 				} else {
 					System.out.println(
 							"Habitat preferito non valido. Deve contenere solo lettere (max 25 caratteri). Habitat preferito non modificato.");
+				}
+			}
+			
+			if (animale.getZona() != null) {
+				if (!animale.getHabitatPreferito().equalsIgnoreCase(animale.getZona().getHabitat().getNome())) {
+					animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
+					System.out.println("Animale rimosso dalla zona attuale perché il nuovo habitat preferito è incompatibile con l'habitat della zona.");
 				}
 			}
 
