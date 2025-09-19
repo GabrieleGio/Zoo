@@ -32,7 +32,7 @@ public class AnimaleDAO {
 	    try {
 	        return em.createQuery(
 	            "SELECT a FROM Animale a " +
-	            "JOIN FETCH a.zona z " +
+	            "LEFT JOIN FETCH a.zona z " +
 	            "LEFT JOIN FETCH z.animaliPresenti " +
 	            "WHERE a.id_animale = :id", 
 	            Animale.class)

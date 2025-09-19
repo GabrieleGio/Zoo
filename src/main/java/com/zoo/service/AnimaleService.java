@@ -77,5 +77,16 @@ public class AnimaleService {
         animaleDAO.update(animale);
         zonaDAO.update(nuovaZona);
     }
+    
+    public void rimuoviAnimaleDaZona(Long animaleId) {
+    	Animale animale = trovaPerId(animaleId);
+    	if (animale == null) {
+    		throw new RuntimeException("Animale non trovato.");
+    	}
+
+    	animale.setZona(null);
+    	animaleDAO.save(animale);
+    }
+
 }
 

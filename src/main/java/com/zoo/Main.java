@@ -19,10 +19,13 @@ import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
-	// TODO mettere un controllo di habitat quando si cambiano i recinti (es. no pesci nel deserto)
-	// TODO controllo su classe Animale di habitat preferito se viene modificato mentre in un altro habitat non più preferito
-	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre ci sono animali ancora dentro
-	// TODO controllo su classe Zona se viene modificata capienza habitat mentre ci sono animali dentro
+	// TODO controllo su classe Animale di habitat preferito se viene modificato
+	// mentre in un altro habitat non più preferito
+	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre
+	// ci sono animali ancora dentro
+	// TODO controllo su classe Zona se viene modificata capienza habitat mentre ci
+	// sono animali dentro
+
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
 
@@ -37,13 +40,12 @@ public class Main {
 		boolean running = true;
 		while (running) {
 			if (loggedInUser == null) {
-			    showAuthMenu();
-			} else if (loggedInUser.getRuolo() != null && 
-			          ("ADMIN".equals(loggedInUser.getRuolo().getNome()) || 
-			           "DIRETTORE".equals(loggedInUser.getRuolo().getNome()))) {
-			    showAdminMenu();
+				showAuthMenu();
+			} else if (loggedInUser.getRuolo() != null && ("ADMIN".equals(loggedInUser.getRuolo().getNome())
+					|| "DIRETTORE".equals(loggedInUser.getRuolo().getNome()))) {
+				showAdminMenu();
 			} else {
-			    showAppMenu();
+				showAppMenu();
 			}
 		}
 	}
@@ -59,16 +61,16 @@ public class Main {
 		case "1":
 			register();
 			break;
-			
+
 		case "2":
 			login();
 			break;
-			
+
 		case "3":
 			System.out.println("Grazie per aver usato l'app. Arrivederci!");
 			System.exit(0);
 			break;
-			
+
 		default:
 			System.out.println("Opzione non valida. Riprova.");
 		}
@@ -101,7 +103,7 @@ public class Main {
 			System.out.println("Opzione non valida. Riprova.");
 		}
 	}
-	
+
 	private static void showAdminMenu() {
 		System.out.println("\nMenu Principale - " + loggedInUser.getNome());
 		System.out.println();
@@ -157,7 +159,7 @@ public class Main {
 		case "2":
 			modificaRuoloDipendente();
 			break;
-			
+
 		case "3":
 			visualizzaAnimaliAssegnati();
 			break;
@@ -165,15 +167,15 @@ public class Main {
 		case "4":
 			assegnaAnimaleADipendente();
 			break;
-		
+
 		case "5":
 			rimuoviAssegnazione();
 			break;
-		
+
 		case "6":
 			eliminaDipendente();
 			break;
-		
+
 		case "7":
 			return;
 
@@ -252,7 +254,7 @@ public class Main {
 		case "5":
 			spostaAnimale();
 			break;
-			
+
 		case "6":
 			return;
 
@@ -262,25 +264,25 @@ public class Main {
 	}
 
 	private static void visualizzaAnimali() {
-	    List<Animale> animali = animaleService.trovaTutti();
-	    if (animali.isEmpty()) {
-	        System.out.println("Nessun animale presente.");
-	    } else {
-	        for (Animale animale : animali) {
-	            System.out.println("ID: " + animale.getId_animale());
-	            System.out.println("Nome: " + animale.getNome());
-	            System.out.println("Specie: " + animale.getSpecie());
-	            System.out.println("Anno di nascita: " + animale.getAnnoNascita());
-	            System.out.println("Habitat preferito: " + animale.getHabitatPreferito());
-	            Zona zona = animale.getZona();
-	            if (zona != null) {
-	                System.out.println("Zona attuale: " + zona.getNome() + " [ID: " + zona.getId_zona() + "]");
-	            } else {
-	                System.out.println("Zona: da assegnare");
-	            }
-	            System.out.println("--------------------");
-	        }
-	    }
+		List<Animale> animali = animaleService.trovaTutti();
+		if (animali.isEmpty()) {
+			System.out.println("Nessun animale presente.");
+		} else {
+			for (Animale animale : animali) {
+				System.out.println("ID: " + animale.getId_animale());
+				System.out.println("Nome: " + animale.getNome());
+				System.out.println("Specie: " + animale.getSpecie());
+				System.out.println("Anno di nascita: " + animale.getAnnoNascita());
+				System.out.println("Habitat preferito: " + animale.getHabitatPreferito());
+				Zona zona = animale.getZona();
+				if (zona != null) {
+					System.out.println("Zona attuale: " + zona.getNome() + " [ID: " + zona.getId_zona() + "]");
+				} else {
+					System.out.println("Zona: da assegnare");
+				}
+				System.out.println("--------------------");
+			}
+		}
 	}
 
 	private static void aggiungiAnimale() {
@@ -312,11 +314,11 @@ public class Main {
 			System.out.println("Registrazione annullata: Specie non conforme (contiene numeri o simboli).");
 			return;
 		}
-		
+
 		if (habitatPreferitoAnimaleReg.length() > 25) {
 			System.out.println("Registrazione annullata: Habitat preferito non conforme (max 25 caratteri).");
 		}
-		
+
 		if (habitatPreferitoAnimaleReg.matches("^[a-zA-Z]+$")) {
 			System.out.println("Registrazione annullata: Habitat preferito non conforme (contiente numeri o simboli).");
 		}
@@ -389,13 +391,15 @@ public class Main {
 					if (annoNascita >= 0) {
 						animale.setAnnoNascita(annoNascita);
 					} else {
-						System.out.println("Errore: L'anno di nascita deve essere un numero positivo. Anno di nascita non modificato.");
+						System.out.println(
+								"Errore: L'anno di nascita deve essere un numero positivo. Anno di nascita non modificato.");
 					}
 				} catch (NumberFormatException e) {
-					System.out.println("Errore: L'anno di nascita inserito non è un numero valido. Anno di nascita non modificato.");
+					System.out.println(
+							"Errore: L'anno di nascita inserito non è un numero valido. Anno di nascita non modificato.");
 				}
 			}
-			
+
 			System.out.print("Nuovo habitat preferito (" + animale.getSpecie() + "): ");
 			String nuovoHabitatPreferito = scanner.nextLine().trim();
 			if (!nuovoHabitatPreferito.isEmpty()) {
@@ -446,79 +450,88 @@ public class Main {
 			System.out.println("ID non valido. Operazione annullata.");
 		}
 	}
-	
+
 	public static void spostaAnimale() {
-	    visualizzaAnimali();
+		visualizzaAnimali();
 
-	    System.out.println("Inserisci l'ID dell'animale:");
-	    String animaleIdStr = scanner.nextLine().trim();
-	    Long animaleId;
-	    try {
-	        animaleId = Long.parseLong(animaleIdStr);
-	        if (animaleId <= 0) {
-	            System.out.println("Errore: ID dell'animale non valido.");
-	            return;
-	        }
-	    } catch (NumberFormatException e) {
-	        System.out.println("Errore: ID animale non valido.");
-	        return;
-	    }
+		System.out.println("Inserisci l'ID dell'animale:");
+		String animaleIdStr = scanner.nextLine().trim();
+		Long animaleId;
+		try {
+			animaleId = Long.parseLong(animaleIdStr);
+			if (animaleId <= 0) {
+				System.out.println("Errore: ID dell'animale non valido.");
+				return;
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("Errore: ID animale non valido.");
+			return;
+		}
 
-	    Animale animale = animaleService.trovaPerId(animaleId);
-	    if (animale == null) {
-	        System.out.println("Animale non trovato con l'ID specificato.");
-	        return;
-	    }
+		Animale animale = animaleService.trovaPerId(animaleId);
+		if (animale == null) {
+			System.out.println("Animale non trovato con l'ID specificato.");
+			return;
+		}
 
-	    visualizzaZone();
+		visualizzaZone();
 
-	    System.out.println("Inserisci l'ID della zona di destinazione:");
-	    String zonaIdStr = scanner.nextLine().trim();
-	    Long zonaId;
-	    try {
-	        zonaId = Long.parseLong(zonaIdStr);
-	        if (zonaId <= 0) {
-	            System.out.println("Errore: ID della zona non valido.");
-	            return;
-	        }
-	    } catch (NumberFormatException e) {
-	        System.out.println("Errore: ID zona non valido.");
-	        return;
-	    }
+		System.out.println("Inserisci l'ID della zona di destinazione oppure '0' per togliere l'animale da ogni zona: ");
+		String zonaIdStr = scanner.nextLine().trim();
+		Long zonaId;
+		try {
+			zonaId = Long.parseLong(zonaIdStr);
+			if (zonaId < 0) {
+				System.out.println("Errore: ID della zona non valido.");
+				return;
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("Errore: ID zona non valido.");
+			return;
+		}
+		
+		if (zonaId == 0) {
+			// Rimozione da qualsiasi zona
+			try {
+				animaleService.rimuoviAnimaleDaZona(animaleId);
+				System.out.println("Animale rimosso con successo da qualunque zona.");
+			} catch (RuntimeException e) {
+				System.out.println("Errore durante la rimozione dell'animale dalla zona: " + e.getMessage());
+			}
+			return;
+		}
 
-	    Zona nuovaZona = zonaService.trovaPerId(zonaId);
-	    if (nuovaZona == null) {
-	        System.out.println("Zona non trovata con l'ID specificato.");
-	        return;
-	    }
+		Zona nuovaZona = zonaService.trovaPerId(zonaId);
+		if (nuovaZona == null) {
+			System.out.println("Zona non trovata con l'ID specificato.");
+			return;
+		}
 
-	    Zona vecchiaZona = animale.getZona();
+		Zona vecchiaZona = animale.getZona();
 
-	    long animaliNellaNuovaZona = zonaService.countAnimaliInZona(nuovaZona.getId_zona());
-	    if (animaliNellaNuovaZona >= nuovaZona.getCapienza()) {
-	        System.out.println("Errore: La zona selezionata è già piena. Impossibile spostare l'animale.");
-	        return;
-	    }
+		long animaliNellaNuovaZona = zonaService.countAnimaliInZona(nuovaZona.getId_zona());
+		if (animaliNellaNuovaZona >= nuovaZona.getCapienza()) {
+			System.out.println("Errore: La zona selezionata è già piena. Impossibile spostare l'animale.");
+			return;
+		}
 
-	    if (vecchiaZona != null && vecchiaZona.getId_zona().equals(nuovaZona.getId_zona())) {
-	        System.out.println("L'animale è già in questa zona.");
-	        return;
-	    }
-	    
-	    if (!nuovaZona.getHabitat().getNome().equalsIgnoreCase(animale.getHabitatPreferito())) {
-	        System.out.println("Errore: L'habitat in cui vuoi spostare l'animale non è il suo habitat naturale!");
-	        return;
-	    }
+		if (vecchiaZona != null && vecchiaZona.getId_zona().equals(nuovaZona.getId_zona())) {
+			System.out.println("L'animale è già in questa zona.");
+			return;
+		}
 
-	    
-	    try {
-	        animaleService.spostaAnimaleInZona(animaleId, zonaId);
-	        System.out.println("Animale spostato con successo nella nuova zona.");
-	    } catch (RuntimeException e) {
-	        System.out.println("Errore durante lo spostamento: " + e.getMessage());
-	    }
+		if (!nuovaZona.getHabitat().getNome().equalsIgnoreCase(animale.getHabitatPreferito())) {
+			System.out.println("Errore: L'habitat in cui vuoi spostare l'animale non è il suo habitat naturale!");
+			return;
+		}
+
+		try {
+			animaleService.spostaAnimaleInZona(animaleId, zonaId);
+			System.out.println("Animale spostato con successo nella nuova zona.");
+		} catch (RuntimeException e) {
+			System.out.println("Errore durante lo spostamento: " + e.getMessage());
+		}
 	}
-
 
 	private static void register() {
 		System.out.print("Inserisci nome: ");
@@ -587,369 +600,368 @@ public class Main {
 	}
 
 	private static void visualizzaZone() {
-	    List<Zona> zone = zonaService.trovaTutte();
-	    if (zone.isEmpty()) {
-	        System.out.println("Nessuna zona presente.");
-	    } else {
-	        for (Zona zona : zone) {
-	            long animaliPresentiNumero = zonaService.countAnimaliInZona(zona.getId_zona());
-	            int capienzaMassima = zona.getCapienza();
-	            int capienzaAttuale = capienzaMassima - (int) animaliPresentiNumero;
-	            List<Animale> animaliPresenti = zona.getAnimaliPresenti();
-	            String stampaAnimaliPresenti = animaliPresenti.stream()
-	            	    .map(animale -> "[" + animale.getNome() + " (ID: " + animale.getId_animale() + ")" + "]")
-	            	    .collect(Collectors.joining(", "));
+		List<Zona> zone = zonaService.trovaTutte();
+		if (zone.isEmpty()) {
+			System.out.println("Nessuna zona presente.");
+		} else {
+			for (Zona zona : zone) {
+				long animaliPresentiNumero = zonaService.countAnimaliInZona(zona.getId_zona());
+				int capienzaMassima = zona.getCapienza();
+				int capienzaAttuale = capienzaMassima - (int) animaliPresentiNumero;
+				List<Animale> animaliPresenti = zona.getAnimaliPresenti();
+				String stampaAnimaliPresenti = animaliPresenti.stream()
+						.map(animale -> "[" + animale.getNome() + " (ID: " + animale.getId_animale() + ")" + "]")
+						.collect(Collectors.joining(", "));
 
-	            System.out.println("Zona [ID: " + zona.getId_zona() + ", Nome: " + zona.getNome() +
-	                ", Habitat: " + zona.getHabitat() +
-	                ", Capienza Massima: " + capienzaMassima +
-	                ", Animali Presenti: " + stampaAnimaliPresenti +
-	                ", Capienza Attuale: " + capienzaAttuale + "]");
-	            System.out.println("--------------------");
-	        }
-	    }
+				System.out.println("Zona [ID: " + zona.getId_zona() + ", Nome: " + zona.getNome() + ", Habitat: "
+						+ zona.getHabitat() + ", Capienza Massima: " + capienzaMassima + ", Animali Presenti: "
+						+ stampaAnimaliPresenti + ", Capienza Attuale: " + capienzaAttuale + "]");
+				System.out.println("--------------------");
+			}
+		}
 	}
 
 	private static void aggiungiZona() {
-	    System.out.println("Inserisci il nome della zona: ");
-	    String nomeZona = scanner.nextLine().trim();
+		System.out.println("Inserisci il nome della zona: ");
+		String nomeZona = scanner.nextLine().trim();
 
-	    List<Habitat> habitatDisponibili = habitatService.listaTutti();
+		List<Habitat> habitatDisponibili = habitatService.listaTutti();
 
-	    if (habitatDisponibili.isEmpty()) {
-	        System.out.println("Nessun habitat disponibile. Impossibile creare la zona.");
-	        return;
-	    }
+		if (habitatDisponibili.isEmpty()) {
+			System.out.println("Nessun habitat disponibile. Impossibile creare la zona.");
+			return;
+		}
 
-	    System.out.println("Scegli l'habitat per la zona (scrivi il nome esatto): ");
-	    for (Habitat habitat : habitatDisponibili) {
-	        System.out.println("- " + habitat.getNome());
-	    }
+		System.out.println("Scegli l'habitat per la zona (scrivi il nome esatto): ");
+		for (Habitat habitat : habitatDisponibili) {
+			System.out.println("- " + habitat.getNome());
+		}
 
-	    String habitatScelto = scanner.nextLine().trim();
-	    Habitat habitatSelezionato = habitatService.cercaPerNome(habitatScelto);
+		String habitatScelto = scanner.nextLine().trim();
+		Habitat habitatSelezionato = habitatService.cercaPerNome(habitatScelto);
 
-	    if (habitatSelezionato == null) {
-	        System.out.println("Habitat non valido. Operazione annullata.");
-	        return;
-	    }
+		if (habitatSelezionato == null) {
+			System.out.println("Habitat non valido. Operazione annullata.");
+			return;
+		}
 
-	    System.out.println("Inserisci la capienza della zona: ");
-	    String capienzaReg = scanner.nextLine().trim();
-	    int capienza;
-	    try {
-	        capienza = Integer.parseInt(capienzaReg);
-	        if (capienza <= 0) {
-	            System.out.println("La capienza deve essere un numero positivo.");
-	            return;
-	        }
-	    } catch (NumberFormatException e) {
-	        System.out.println("Capienza non valida.");
-	        return;
-	    }
+		System.out.println("Inserisci la capienza della zona: ");
+		String capienzaReg = scanner.nextLine().trim();
+		int capienza;
+		try {
+			capienza = Integer.parseInt(capienzaReg);
+			if (capienza <= 0) {
+				System.out.println("La capienza deve essere un numero positivo.");
+				return;
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("Capienza non valida.");
+			return;
+		}
 
-	    Zona nuovaZona = new Zona();
-	    nuovaZona.setNome(nomeZona);
-	    nuovaZona.setHabitat(habitatSelezionato);
-	    nuovaZona.setCapienza(capienza);
+		Zona nuovaZona = new Zona();
+		nuovaZona.setNome(nomeZona);
+		nuovaZona.setHabitat(habitatSelezionato);
+		nuovaZona.setCapienza(capienza);
 
-	    zonaService.creaZona(nuovaZona);
-	    System.out.println("Zona aggiunta con successo!");
+		zonaService.creaZona(nuovaZona);
+		System.out.println("Zona aggiunta con successo!");
 	}
 
-	
 	private static void modificaZona() {
-	    visualizzaZone();
+		visualizzaZone();
 
-	    System.out.println("Inserisci l'ID della zona da modificare: ");
-	    String input = scanner.nextLine().trim();
+		System.out.println("Inserisci l'ID della zona da modificare: ");
+		String input = scanner.nextLine().trim();
 
-	    try {
-	        Long id = Long.parseLong(input);
-	        Zona zona = zonaService.trovaPerId(id);
+		try {
+			Long id = Long.parseLong(input);
+			Zona zona = zonaService.trovaPerId(id);
 
-	        if (zona == null) {
-	            System.out.println("Zona non trovata.");
-	            return;
-	        }
+			if (zona == null) {
+				System.out.println("Zona non trovata.");
+				return;
+			}
 
-	        System.out.print("Nuovo nome (" + zona.getNome() + "): ");
-	        String nuovoNome = scanner.nextLine().trim();
-	        if (!nuovoNome.isEmpty()) {
-	            zona.setNome(nuovoNome);
-	        }
+			System.out.print("Nuovo nome (" + zona.getNome() + "): ");
+			String nuovoNome = scanner.nextLine().trim();
+			if (!nuovoNome.isEmpty()) {
+				zona.setNome(nuovoNome);
+			}
 
-	        System.out.println("Modifica habitat (corrente: " + zona.getHabitat().getNome() + ")");
-	        System.out.println("Scegli un nuovo habitat (scrivi il nome esatto): ");
+			System.out.println("Modifica habitat (corrente: " + zona.getHabitat().getNome() + ")");
+			System.out.println("Scegli un nuovo habitat (scrivi il nome esatto): ");
 
-	        List<Habitat> habitatDisponibili = habitatService.listaTutti();
+			List<Habitat> habitatDisponibili = habitatService.listaTutti();
 
-	        if (habitatDisponibili.isEmpty()) {
-	            System.out.println("Nessun habitat disponibile.");
-	            return;
-	        }
+			if (habitatDisponibili.isEmpty()) {
+				System.out.println("Nessun habitat disponibile.");
+				return;
+			}
 
-	        for (Habitat habitat : habitatDisponibili) {
-	            System.out.println("- " + habitat.getNome());
-	        }
+			for (Habitat habitat : habitatDisponibili) {
+				System.out.println("- " + habitat.getNome());
+			}
 
-	        String habitatScelto = scanner.nextLine().trim();
-	        Habitat habitatSelezionato = habitatService.cercaPerNome(habitatScelto);
-	        if (habitatSelezionato == null) {
-	            System.out.println("Habitat non valido. Operazione annullata.");
-	            return;
-	        }
-	        zona.setHabitat(habitatSelezionato);
+			String habitatScelto = scanner.nextLine().trim();
+			Habitat habitatSelezionato = habitatService.cercaPerNome(habitatScelto);
+			if (habitatSelezionato == null) {
+				System.out.println("Habitat non valido. Operazione annullata.");
+				return;
+			}
+			zona.setHabitat(habitatSelezionato);
 
-	        System.out.print("Nuova capienza (" + zona.getCapienza() + "): ");
-	        String nuovaCapienza = scanner.nextLine().trim();
-	        if (!nuovaCapienza.isEmpty()) {
-	            try {
-	            	// mettere controllo capienza se ci sono già animali dentro
-	                zona.setCapienza(Integer.parseInt(nuovaCapienza));
-	            } catch (NumberFormatException e) {
-	                System.out.println("Capienza non valida. Operazione annullata.");
-	                return;
-	            }
-	        }
+			System.out.print("Nuova capienza (" + zona.getCapienza() + "): ");
+			String nuovaCapienza = scanner.nextLine().trim();
+			if (!nuovaCapienza.isEmpty()) {
+				try {
+					//TODO da vedere se funziona controllo capienza se ci sono già animali dentro
+					Integer nuovaCapienzaInt = Integer.parseInt(nuovaCapienza);
+					if (nuovaCapienzaInt < zona.getAnimaliPresenti().size()) {
+						System.out.println("Impossibile diminuire la capienza, ci sono ancora animali ad occupare posti");
+						return;
+					}
+					zona.setCapienza(Integer.parseInt(nuovaCapienza));
+				} catch (NumberFormatException e) {
+					System.out.println("Capienza non valida. Operazione annullata.");
+					return;
+				}
+			}
 
-	        zonaService.aggiornaZona(zona);
-	        System.out.println("Zona modificata con successo.");
+			zonaService.aggiornaZona(zona);
+			System.out.println("Zona modificata con successo.");
 
-	    } catch (NumberFormatException e) {
-	        System.out.println("ID non valido. Operazione annullata.");
-	    }
+		} catch (NumberFormatException e) {
+			System.out.println("ID non valido. Operazione annullata.");
+		}
 	}
-
 
 	private static void eliminaZona() {
-	    visualizzaZone();
+		visualizzaZone();
 
-	    System.out.println("Inserisci l'ID della zona da eliminare: ");
-	    String input = scanner.nextLine().trim();
+		System.out.println("Inserisci l'ID della zona da eliminare: ");
+		String input = scanner.nextLine().trim();
 
-	    try {
-	        Long id = Long.parseLong(input);
-	        Zona zona = zonaService.trovaPerId(id);
+		try {
+			Long id = Long.parseLong(input);
+			Zona zona = zonaService.trovaPerId(id);
 
-	        if (zona == null) {
-	            System.out.println("Zona non trovata con l'ID specificato.");
-	            return;
-	        }
+			if (zona == null) {
+				System.out.println("Zona non trovata con l'ID specificato.");
+				return;
+			}
 
-	        long animaliPresenti = zonaService.countAnimaliInZona(zona.getId_zona());
-	        if (animaliPresenti > 0) {
-	            System.out.println("Errore: La zona contiene ancora " + animaliPresenti + " animale/i. " +
-	                               "Sposta o elimina prima gli animali prima di rimuovere la zona.");
-	            return;
-	        }
+			long animaliPresenti = zonaService.countAnimaliInZona(zona.getId_zona());
+			if (animaliPresenti > 0) {
+				System.out.println("Errore: La zona contiene ancora " + animaliPresenti + " animale/i. "
+						+ "Sposta o elimina prima gli animali prima di rimuovere la zona.");
+				return;
+			}
 
-	        System.out.println("Sei sicuro di voler eliminare la zona: " + zona.getNome() + " (ID: " + id + ")? (s/N)");
-	        String conferma = scanner.nextLine().trim().toLowerCase();
+			System.out.println("Sei sicuro di voler eliminare la zona: " + zona.getNome() + " (ID: " + id + ")? (s/N)");
+			String conferma = scanner.nextLine().trim().toLowerCase();
 
-	        if (conferma.equals("s")) {
-	            zonaService.eliminaZona(id);
-	            System.out.println("Zona eliminata con successo.");
-	        } else {
-	            System.out.println("Eliminazione annullata.");
-	        }
+			if (conferma.equals("s")) {
+				zonaService.eliminaZona(id);
+				System.out.println("Zona eliminata con successo.");
+			} else {
+				System.out.println("Eliminazione annullata.");
+			}
 
-	    } catch (NumberFormatException e) {
-	        System.out.println("ID non valido. Operazione annullata.");
-	    }
+		} catch (NumberFormatException e) {
+			System.out.println("ID non valido. Operazione annullata.");
+		}
 	}
-	
+
 	private static void visualizzaDipendenti() {
-	    List<Dipendente> dipendenti = dipendenteService.trovaTutti();
+		List<Dipendente> dipendenti = dipendenteService.trovaTutti();
 
-	    if (dipendenti.isEmpty()) {
-	        System.out.println("Nessun dipendente trovato.");
-	        return;
-	    }
+		if (dipendenti.isEmpty()) {
+			System.out.println("Nessun dipendente trovato.");
+			return;
+		}
 
-	    for (Dipendente d : dipendenti) {
-	        System.out.println("ID: " + d.getId_dipendente());
-	        System.out.println("Nome: " + d.getNome() + " " + d.getCognome());
-	        System.out.println("Username: " + d.getUsername());
-	        System.out.println("Email: " + d.getEmail());
-	        System.out.println("Ruolo: " + d.getRuolo());
-	        System.out.println("---------------------------");
-	    }
+		for (Dipendente d : dipendenti) {
+			System.out.println("ID: " + d.getId_dipendente());
+			System.out.println("Nome: " + d.getNome() + " " + d.getCognome());
+			System.out.println("Username: " + d.getUsername());
+			System.out.println("Email: " + d.getEmail());
+			System.out.println("Ruolo: " + d.getRuolo());
+			System.out.println("---------------------------");
+		}
 	}
-	
+
 	private static void modificaRuoloDipendente() {
-	    visualizzaDipendenti();
+		visualizzaDipendenti();
 
-	    System.out.print("Inserisci l'ID del dipendente da modificare: ");
-	    String input = scanner.nextLine().trim();
+		System.out.print("Inserisci l'ID del dipendente da modificare: ");
+		String input = scanner.nextLine().trim();
 
-	    try {
-	        Long id = Long.parseLong(input);
-	        Dipendente dipendente = dipendenteService.trovaPerId(id);
+		try {
+			Long id = Long.parseLong(input);
+			Dipendente dipendente = dipendenteService.trovaPerId(id);
 
-	        if (dipendente == null) {
-	            System.out.println("Dipendente non trovato.");
-	            return;
-	        }
+			if (dipendente == null) {
+				System.out.println("Dipendente non trovato.");
+				return;
+			}
 
-	        Ruolo ruoloAdmin = ruoloService.getRuoloByNome("ADMIN");
-	        Ruolo ruoloDirettore = ruoloService.getRuoloByNome("DIRETTORE");
+			Ruolo ruoloAdmin = ruoloService.getRuoloByNome("ADMIN");
+			Ruolo ruoloDirettore = ruoloService.getRuoloByNome("DIRETTORE");
 
-	        if (dipendente.getRuolo().equals(ruoloAdmin) && !loggedInUser.getRuolo().equals(ruoloDirettore)) {
-	            System.out.println("Impossibile modificare un altro admin.");
-	            return;
-	        }
+			if (dipendente.getRuolo().equals(ruoloAdmin) && !loggedInUser.getRuolo().equals(ruoloDirettore)) {
+				System.out.println("Impossibile modificare un altro admin.");
+				return;
+			}
 
-	        if (dipendente.getId_dipendente().equals(loggedInUser.getId_dipendente())) {
-	            System.out.println("Non puoi modificare il tuo stesso ruolo.");
-	            return;
-	        }
+			if (dipendente.getId_dipendente().equals(loggedInUser.getId_dipendente())) {
+				System.out.println("Non puoi modificare il tuo stesso ruolo.");
+				return;
+			}
 
-	        System.out.println("Ruolo attuale: " + dipendente.getRuolo().getNome());
-	        System.out.println("Scegli il nuovo ruolo (scrivi il nome esatto):");
+			System.out.println("Ruolo attuale: " + dipendente.getRuolo().getNome());
+			System.out.println("Scegli il nuovo ruolo (scrivi il nome esatto):");
 
-	        List<Ruolo> ruoliDisponibili = ruoloService.getTuttiIRuoli();
+			List<Ruolo> ruoliDisponibili = ruoloService.getTuttiIRuoli();
 
-	        for (Ruolo ruolo : ruoliDisponibili) {
-	            System.out.println("- " + ruolo.getNome());
-	        }
+			for (Ruolo ruolo : ruoliDisponibili) {
+				System.out.println("- " + ruolo.getNome());
+			}
 
-	        String nuovoRuoloInput = scanner.nextLine().trim().toUpperCase();
-	        Ruolo nuovoRuolo = ruoloService.getRuoloByNome(nuovoRuoloInput);
+			String nuovoRuoloInput = scanner.nextLine().trim().toUpperCase();
+			Ruolo nuovoRuolo = ruoloService.getRuoloByNome(nuovoRuoloInput);
 
-	        if (nuovoRuolo == null) {
-	            System.out.println("Ruolo non valido. Operazione annullata.");
-	            return;
-	        }
+			if (nuovoRuolo == null) {
+				System.out.println("Ruolo non valido. Operazione annullata.");
+				return;
+			}
 
-	        dipendente.setRuolo(nuovoRuolo);
-	        dipendenteService.aggiornaDipendente(dipendente);
-	        System.out.println("Ruolo aggiornato con successo.");
+			dipendente.setRuolo(nuovoRuolo);
+			dipendenteService.aggiornaDipendente(dipendente);
+			System.out.println("Ruolo aggiornato con successo.");
 
-	    } catch (NumberFormatException e) {
-	        System.out.println("ID non valido.");
-	    }
+		} catch (NumberFormatException e) {
+			System.out.println("ID non valido.");
+		}
 	}
-
 
 	private static void eliminaDipendente() {
-	    visualizzaDipendenti();
+		visualizzaDipendenti();
 
-	    System.out.print("Inserisci l'ID del dipendente da eliminare: ");
-	    String input = scanner.nextLine().trim();
+		System.out.print("Inserisci l'ID del dipendente da eliminare: ");
+		String input = scanner.nextLine().trim();
 
-	    try {
-	        Long id = Long.parseLong(input);
-	        Dipendente dipendente = dipendenteService.trovaPerId(id);
+		try {
+			Long id = Long.parseLong(input);
+			Dipendente dipendente = dipendenteService.trovaPerId(id);
 
-	        if (dipendente == null) {
-	            System.out.println("Dipendente non trovato.");
-	            return;
-	        }
+			if (dipendente == null) {
+				System.out.println("Dipendente non trovato.");
+				return;
+			}
 
-	        Ruolo ruoloAdmin = ruoloService.getRuoloByNome("ADMIN");
-	        Ruolo ruoloDirettore = ruoloService.getRuoloByNome("DIRETTORE");
+			Ruolo ruoloAdmin = ruoloService.getRuoloByNome("ADMIN");
+			Ruolo ruoloDirettore = ruoloService.getRuoloByNome("DIRETTORE");
 
-	        if (dipendente.getRuolo().equals(ruoloAdmin) && !loggedInUser.getRuolo().equals(ruoloDirettore)) {
-	            System.out.println("Impossibile eliminare un altro admin.");
-	            return;
-	        }
+			if (dipendente.getRuolo().equals(ruoloAdmin) && !loggedInUser.getRuolo().equals(ruoloDirettore)) {
+				System.out.println("Impossibile eliminare un altro admin.");
+				return;
+			}
 
-	        if (loggedInUser.getId_dipendente().equals(id)) {
-	            System.out.println("Non puoi eliminare te stesso.");
-	            return;
-	        }
+			if (loggedInUser.getId_dipendente().equals(id)) {
+				System.out.println("Non puoi eliminare te stesso.");
+				return;
+			}
 
-	        System.out.print("Sei sicuro di voler eliminare " + dipendente.getNome() + "? (s/N): ");
-	        String conferma = scanner.nextLine().trim().toLowerCase();
+			System.out.print("Sei sicuro di voler eliminare " + dipendente.getNome() + "? (s/N): ");
+			String conferma = scanner.nextLine().trim().toLowerCase();
 
-	        if (conferma.equals("s")) {
-	            List<DipendenteAnimale> relazioni = dipendenteAnimaleService.trovaTutti();
-	            for (DipendenteAnimale relazione : relazioni) {
-	                if (relazione.getDipendente().getId_dipendente().equals(id)) {
-	                    dipendenteAnimaleService.eliminaRelazione(relazione.getId_dipendente_animale());
-	                }
-	            }
+			if (conferma.equals("s")) {
+				List<DipendenteAnimale> relazioni = dipendenteAnimaleService.trovaTutti();
+				for (DipendenteAnimale relazione : relazioni) {
+					if (relazione.getDipendente().getId_dipendente().equals(id)) {
+						dipendenteAnimaleService.eliminaRelazione(relazione.getId_dipendente_animale());
+					}
+				}
 
-	            dipendenteService.eliminaDipendente(id);
-	            System.out.println("Dipendente eliminato con successo.");
-	        } else {
-	            System.out.println("Eliminazione annullata.");
-	        }
+				dipendenteService.eliminaDipendente(id);
+				System.out.println("Dipendente eliminato con successo.");
+			} else {
+				System.out.println("Eliminazione annullata.");
+			}
 
-	    } catch (NumberFormatException e) {
-	        System.out.println("ID non valido.");
-	    }
+		} catch (NumberFormatException e) {
+			System.out.println("ID non valido.");
+		}
 	}
 
-
-	
 	private static void assegnaAnimaleADipendente() {
-	    visualizzaDipendenti();
-	    System.out.print("Inserisci l'ID del dipendente a cui assegnare un animale: ");
-	    Long dipId = Long.parseLong(scanner.nextLine().trim());
-	    Dipendente dipendente = dipendenteService.trovaPerId(dipId);
-	    if (dipendente == null) {
-	        System.out.println("Dipendente non trovato.");
-	        return;
-	    }
+		visualizzaDipendenti();
+		System.out.print("Inserisci l'ID del dipendente a cui assegnare un animale: ");
+		Long dipId = Long.parseLong(scanner.nextLine().trim());
+		Dipendente dipendente = dipendenteService.trovaPerId(dipId);
+		if (dipendente == null) {
+			System.out.println("Dipendente non trovato.");
+			return;
+		}
 
-	    visualizzaAnimali();
-	    System.out.print("Inserisci l'ID dell'animale da assegnare: ");
-	    Long aniId = Long.parseLong(scanner.nextLine().trim());
-	    Animale animale = animaleService.trovaPerId(aniId);
-	    if (animale == null) {
-	        System.out.println("Animale non trovato.");
-	        return;
-	    }
+		visualizzaAnimali();
+		System.out.print("Inserisci l'ID dell'animale da assegnare: ");
+		Long aniId = Long.parseLong(scanner.nextLine().trim());
+		Animale animale = animaleService.trovaPerId(aniId);
+		if (animale == null) {
+			System.out.println("Animale non trovato.");
+			return;
+		}
 
-	    DipendenteAnimale relazione = new DipendenteAnimale();
-	    relazione.setDipendente(dipendente);
-	    relazione.setAnimale(animale);
-	    dipendenteAnimaleService.assegnaDipendenteAAnimale(relazione);
+		DipendenteAnimale relazione = new DipendenteAnimale();
+		relazione.setDipendente(dipendente);
+		relazione.setAnimale(animale);
+		dipendenteAnimaleService.assegnaDipendenteAAnimale(relazione);
 
-	    System.out.println("Assegnazione completata con successo.");
+		System.out.println("Assegnazione completata con successo.");
 	}
-	
+
 	private static void visualizzaAnimaliAssegnati() {
-	    visualizzaDipendenti();
-	    System.out.print("Inserisci l'ID del dipendente: ");
-	    Long dipId = Long.parseLong(scanner.nextLine().trim());
+		visualizzaDipendenti();
+		System.out.print("Inserisci l'ID del dipendente: ");
+		Long dipId = Long.parseLong(scanner.nextLine().trim());
 
-	    List<DipendenteAnimale> assegnazioni = dipendenteAnimaleService.trovaTutti();
-	    boolean trovato = false;
-	    for (DipendenteAnimale da : assegnazioni) {
-	        if (da.getDipendente().getId_dipendente().equals(dipId)) {
-	            Animale a = da.getAnimale();
-	            System.out.println("Animale: " + a.getNome() + ", Specie: " + a.getSpecie() + ", Anno di nascita: " + a.getAnnoNascita());
-	            trovato = true;
-	        }
-	    }
+		List<DipendenteAnimale> assegnazioni = dipendenteAnimaleService.trovaTutti();
+		boolean trovato = false;
+		for (DipendenteAnimale da : assegnazioni) {
+			if (da.getDipendente().getId_dipendente().equals(dipId)) {
+				Animale a = da.getAnimale();
+				System.out.println("Animale: " + a.getNome() + ", Specie: " + a.getSpecie() + ", Anno di nascita: "
+						+ a.getAnnoNascita());
+				trovato = true;
+			}
+		}
 
-	    if (!trovato) {
-	        System.out.println("Nessun animale assegnato a questo dipendente.");
-	    }
+		if (!trovato) {
+			System.out.println("Nessun animale assegnato a questo dipendente.");
+		}
 	}
-	
+
 	private static void rimuoviAssegnazione() {
-	    List<DipendenteAnimale> assegnazioni = dipendenteAnimaleService.trovaTutti();
+		List<DipendenteAnimale> assegnazioni = dipendenteAnimaleService.trovaTutti();
 
-	    if (assegnazioni.isEmpty()) {
-	        System.out.println("Nessuna assegnazione presente.");
-	        return;
-	    }
+		if (assegnazioni.isEmpty()) {
+			System.out.println("Nessuna assegnazione presente.");
+			return;
+		}
 
-	    for (DipendenteAnimale da : assegnazioni) {
-	        System.out.println("ID Assegnazione: " + da.getId_dipendente_animale() +
-	            " | Dipendente: " + da.getDipendente().getNome() + " " + da.getDipendente().getCognome() +
-	            " | Animale: " + da.getAnimale().getNome());
-	    }
+		for (DipendenteAnimale da : assegnazioni) {
+			System.out.println("ID Assegnazione: " + da.getId_dipendente_animale() + " | Dipendente: "
+					+ da.getDipendente().getNome() + " " + da.getDipendente().getCognome() + " | Animale: "
+					+ da.getAnimale().getNome());
+		}
 
-	    System.out.print("Inserisci l'ID dell'assegnazione da rimuovere: ");
-	    Long id = Long.parseLong(scanner.nextLine().trim());
+		System.out.print("Inserisci l'ID dell'assegnazione da rimuovere: ");
+		Long id = Long.parseLong(scanner.nextLine().trim());
 
-	    dipendenteAnimaleService.eliminaRelazione(id);
-	    System.out.println("Assegnazione rimossa con successo.");
+		dipendenteAnimaleService.eliminaRelazione(id);
+		System.out.println("Assegnazione rimossa con successo.");
 	}
 
 	private static void login() {
