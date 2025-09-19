@@ -32,7 +32,7 @@ public class DipendenteDAO {
 		EntityManager em = JpaUtil.getEntityManager();
 		try {
 			TypedQuery<Dipendente> query = em.createQuery(
-					"SELECT d FROM Dipendente d JOIN FETCH d.ruolo WHERE d.id_dipendente = :id", Dipendente.class);
+					"SELECT d FROM Dipendente d LEFT JOIN FETCH d.ruolo WHERE d.id_dipendente = :id", Dipendente.class);
 			query.setParameter("id", id);
 			return query.getSingleResult();
 		} catch (NoResultException e) {
@@ -45,7 +45,7 @@ public class DipendenteDAO {
 	public List<Dipendente> findAll() {
 		EntityManager em = JpaUtil.getEntityManager();
 		try {
-			return em.createQuery("SELECT d FROM Dipendente d JOIN FETCH d.ruolo", Dipendente.class).getResultList();
+			return em.createQuery("SELECT d FROM Dipendente d LEFT JOIN FETCH d.ruolo", Dipendente.class).getResultList();
 		} finally {
 			em.close();
 		}
@@ -92,7 +92,7 @@ public class DipendenteDAO {
 		EntityManager em = JpaUtil.getEntityManager();
 		try {
 			TypedQuery<Dipendente> query = em.createQuery(
-					"SELECT d FROM Dipendente d JOIN FETCH d.ruolo WHERE d.email = :email", Dipendente.class);
+					"SELECT d FROM Dipendente d LEFT JOIN FETCH d.ruolo WHERE d.email = :email", Dipendente.class);
 			query.setParameter("email", email);
 			return query.getSingleResult();
 		} catch (NoResultException e) {
@@ -106,7 +106,7 @@ public class DipendenteDAO {
 		EntityManager em = JpaUtil.getEntityManager();
 		try {
 			TypedQuery<Dipendente> query = em.createQuery(
-					"SELECT d FROM Dipendente d JOIN FETCH d.ruolo WHERE d.username = :username", Dipendente.class);
+					"SELECT d FROM Dipendente d LEFT JOIN FETCH d.ruolo WHERE d.username = :username", Dipendente.class);
 			query.setParameter("username", username);
 			return query.getSingleResult();
 		} catch (NoResultException e) {

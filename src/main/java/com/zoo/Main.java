@@ -20,9 +20,7 @@ import com.zoo.utils.PasswordHashing;
 import com.zoo.service.DipendenteAnimaleService;
 
 public class Main {
-	// TODO controllo su classe Zona se l'habitat preferito viene modificato mentre
-	// ci sono animali ancora dentro
-
+	//TODO Fixare modifica animali (lazy error)
 	private static Dipendente loggedInUser = null;
 	private static final Scanner scanner = new Scanner(System.in);
 
@@ -337,7 +335,7 @@ public class Main {
 		newAnimale.setSpecie(specieAnimaleReg);
 		newAnimale.setAnnoNascita(annoNascitaAnimale);
 		newAnimale.setHabitatPreferito(habitatPreferitoAnimaleReg);
-		newAnimale.setZona(null); // da assegnare in seguito
+		newAnimale.setZona(null);
 
 		animaleService.creaAnimale(newAnimale);
 
@@ -407,11 +405,12 @@ public class Main {
 							"Habitat preferito non valido. Deve contenere solo lettere (max 25 caratteri). Habitat preferito non modificato.");
 				}
 			}
-			
+
 			if (animale.getZona() != null) {
 				if (!animale.getHabitatPreferito().equalsIgnoreCase(animale.getZona().getHabitat().getNome())) {
 					animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
-					System.out.println("Animale rimosso dalla zona attuale perché il nuovo habitat preferito è incompatibile con l'habitat della zona.");
+					System.out.println(
+							"Animale rimosso dalla zona attuale perché il nuovo habitat preferito è incompatibile con l'habitat della zona.");
 				}
 			}
 
@@ -479,7 +478,8 @@ public class Main {
 
 		visualizzaZone();
 
-		System.out.println("Inserisci l'ID della zona di destinazione oppure '0' per togliere l'animale da ogni zona: ");
+		System.out
+				.println("Inserisci l'ID della zona di destinazione oppure '0' per togliere l'animale da ogni zona: ");
 		String zonaIdStr = scanner.nextLine().trim();
 		Long zonaId;
 		try {
@@ -492,7 +492,7 @@ public class Main {
 			System.out.println("Errore: ID zona non valido.");
 			return;
 		}
-		
+
 		if (zonaId == 0) {
 			// Rimozione da qualsiasi zona
 			try {
@@ -595,7 +595,7 @@ public class Main {
 		newUser.setUsername(usernameReg);
 		newUser.setEmail(emailReg);
 		newUser.setPassword(PasswordHashing.hashPassword(passwordReg));
-		newUser.setRuolo(ruoloService.getRuoloByNome("IN_ATTESA"));
+		newUser.setRuolo(ruoloService.getRuoloByNome("NESSUNO"));
 
 		dipendenteService.creaDipendente(newUser);
 
@@ -603,26 +603,35 @@ public class Main {
 	}
 
 	private static void visualizzaZone() {
-		List<Zona> zone = zonaService.trovaTutte();
-		if (zone.isEmpty()) {
-			System.out.println("Nessuna zona presente.");
-		} else {
-			for (Zona zona : zone) {
-				long animaliPresentiNumero = zonaService.countAnimaliInZona(zona.getId_zona());
-				int capienzaMassima = zona.getCapienza();
-				int capienzaAttuale = capienzaMassima - (int) animaliPresentiNumero;
-				List<Animale> animaliPresenti = zona.getAnimaliPresenti();
-				String stampaAnimaliPresenti = animaliPresenti.stream()
-						.map(animale -> "[" + animale.getNome() + " (ID: " + animale.getId_animale() + ")" + "]")
-						.collect(Collectors.joining(", "));
-
-				System.out.println("Zona [ID: " + zona.getId_zona() + ", Nome: " + zona.getNome() + ", Habitat: "
-						+ zona.getHabitat() + ", Capienza Massima: " + capienzaMassima + ", Animali Presenti: "
-						+ stampaAnimaliPresenti + ", Capienza Attuale: " + capienzaAttuale + "]");
-				System.out.println("--------------------");
-			}
-		}
+	    List<Zona> zone = zonaService.trovaTutte();
+	    
+	    if (zone.isEmpty()) {
+	        System.out.println("Nessuna zona presente.");
+	    } else {
+	        for (Zona zona : zone) {
+	            long animaliPresentiNumero = zonaService.countAnimaliInZona(zona.getId_zona());
+	            int capienzaMassima = zona.getCapienza();
+	            int capienzaAttuale = capienzaMassima - (int) animaliPresentiNumero;
+	            List<Animale> animaliPresenti = zona.getAnimaliPresenti();
+	            String stampaAnimaliPresenti;
+	            if (animaliPresenti == null || animaliPresenti.isEmpty()) {
+	                stampaAnimaliPresenti = "Nessuno";
+	            } else {
+	                stampaAnimaliPresenti = animaliPresenti.stream()
+	                    .map(animale -> "[" + animale.getNome() + " (ID: " + animale.getId_animale() + ")]")
+	                    .collect(Collectors.joining(", "));
+	            }
+	            System.out.println("Zona [ID: " + zona.getId_zona() +
+	                ", Nome: " + zona.getNome() +
+	                ", Habitat: " + zona.getHabitat() +
+	                ", Capienza Massima: " + capienzaMassima +
+	                ", Animali Presenti: " + stampaAnimaliPresenti +
+	                ", Capienza Attuale: " + capienzaAttuale + "]");
+	            System.out.println("--------------------");
+	        }
+	    }
 	}
+
 
 	private static void aggiungiZona() {
 		System.out.println("Inserisci il nome della zona: ");
@@ -715,11 +724,11 @@ public class Main {
 			zona.setHabitat(habitatSelezionato);
 			List<Animale> animaliPresenti = new ArrayList<>(zona.getAnimaliPresenti());
 			for (Animale animale : animaliPresenti) {
-			    if (!animale.getHabitatPreferito().equalsIgnoreCase(zona.getHabitat().getNome())) {
-			        animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
-			        zona.getAnimaliPresenti().remove(animale);
-			        System.out.println(animale.getNome() + " rimosso dalla zona perchè habitat non più adatto.");
-			    }
+				if (!animale.getHabitatPreferito().equalsIgnoreCase(zona.getHabitat().getNome())) {
+					animaleService.rimuoviAnimaleDaZona(animale.getId_animale());
+					zona.getAnimaliPresenti().remove(animale);
+					System.out.println(animale.getNome() + " rimosso dalla zona perchè habitat non più adatto.");
+				}
 			}
 
 			System.out.print("Nuova capienza (" + zona.getCapienza() + "): ");
@@ -728,7 +737,8 @@ public class Main {
 				try {
 					Integer nuovaCapienzaInt = Integer.parseInt(nuovaCapienza);
 					if (nuovaCapienzaInt < zona.getAnimaliPresenti().size()) {
-						System.out.println("Impossibile diminuire la capienza, ci sono ancora animali ad occupare posti");
+						System.out
+								.println("Impossibile diminuire la capienza, ci sono ancora animali ad occupare posti");
 						return;
 					}
 					zona.setCapienza(Integer.parseInt(nuovaCapienza));
@@ -819,29 +829,38 @@ public class Main {
 			Ruolo ruoloAdmin = ruoloService.getRuoloByNome("ADMIN");
 			Ruolo ruoloDirettore = ruoloService.getRuoloByNome("DIRETTORE");
 
-			if (dipendente.getRuolo().equals(ruoloAdmin) && !loggedInUser.getRuolo().equals(ruoloDirettore)) {
+			if (dipendente.getRuolo() != null 
+					&& (dipendente.getRuolo().equals(ruoloAdmin) 
+							|| (dipendente.getRuolo().equals(ruoloDirettore) && !loggedInUser.getRuolo().equals(ruoloDirettore)))) {
 				System.out.println("Impossibile modificare un altro admin.");
 				return;
 			}
 
-			if (dipendente.getId_dipendente().equals(loggedInUser.getId_dipendente())) {
+			if (dipendente.getRuolo() != null && dipendente.getId_dipendente().equals(loggedInUser.getId_dipendente())) {
 				System.out.println("Non puoi modificare il tuo stesso ruolo.");
 				return;
 			}
 
-			System.out.println("Ruolo attuale: " + dipendente.getRuolo().getNome());
+			if (dipendente.getRuolo() != null) {
+			    System.out.println("Ruolo attuale: " + dipendente.getRuolo().getNome());
+			} else {
+			    System.out.println("Ruolo attuale: Nessun ruolo assegnato");
+			}
+
 			System.out.println("Scegli il nuovo ruolo (scrivi il nome esatto):");
 
 			List<Ruolo> ruoliDisponibili = ruoloService.getTuttiIRuoli();
 
 			for (Ruolo ruolo : ruoliDisponibili) {
-				System.out.println("- " + ruolo.getNome());
+				if(!ruolo.getNome().equalsIgnoreCase("DIRETTORE")) {
+					System.out.println("- " + ruolo.getNome());
+				}
 			}
 
 			String nuovoRuoloInput = scanner.nextLine().trim().toUpperCase();
 			Ruolo nuovoRuolo = ruoloService.getRuoloByNome(nuovoRuoloInput);
 
-			if (nuovoRuolo == null) {
+			if (nuovoRuolo == null || nuovoRuolo.getNome().equalsIgnoreCase("DIRETTORE")) {
 				System.out.println("Ruolo non valido. Operazione annullata.");
 				return;
 			}
